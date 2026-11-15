@@ -1,0 +1,27 @@
+BronxSoft Netmetar - licence korišćenih delova / third-party notices
+
+Kod Netmetra je pod MIT licencom (vidi LICENSE). Program ne koristi dodatne
+pakete; ispod su delovi drugih autora koji idu uz njega.
+Netmetar's own code is MIT licensed (see LICENSE). It uses no extra packages;
+below are the parts by other authors that ship with it.
+
+
+.NET 10 i Windows Forms / .NET 10 and Windows Forms
+  Copyright (c) .NET Foundation and Contributors. Licenca / License: MIT.
+  https://github.com/dotnet/runtime
+
+SQLite (winsqlite3.dll, deo Windowsa / part of Windows)
+  Javno vlasništvo / public domain. https://www.sqlite.org
+  Netmetar koristi kopiju koja dolazi sa Windowsom i ne nosi svoju.
+  Netmetar uses the copy that comes with Windows and does not ship its own.
+
+DSEG fontovi / DSEG fonts (fonts\DSEG7*, fonts\DSEG14*)
+  Copyright (c) 2017, keshikan (http://www.keshikan.net),
+  with Reserved Font Name "DSEG".
+  Licenca / License: SIL Open Font License 1.1 - pun tekst / full text:
+  fonts\DSEG-LICENSE.txt
+
+Rajdhani (fonts\Rajdhani-SemiBold.ttf)
+  Copyright (c) 2014, Indian Type Foundry (info@indiantypefoundry.com).
+  Licenca / License: SIL Open Font License 1.1 - pun tekst / full text:
+  fonts\Rajdhani-OFL.txt

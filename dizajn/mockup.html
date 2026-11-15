@@ -1,0 +1,117 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:D7;src:url(../fonts/DSEG7Classic-Bold.ttf)}
+@font-face{font-family:D14;src:url(../fonts/DSEG14Classic-Bold.ttf)}
+@font-face{font-family:D14R;src:url(../fonts/DSEG14Classic-Regular.ttf)}
+body{margin:0;background:#2b2d30;font-family:"DejaVu Sans",Arial,sans-serif}
+.scene{width:1600px;height:900px;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 40%,#3a3d42,#1c1d20 75%)}
+.dev{background:linear-gradient(160deg,#f4f3ef,#d9d7d0);border-radius:46px;padding:34px;box-shadow:0 30px 60px #000a,inset 0 2px 0 #fff,inset 0 -3px 0 #a9a69e;border:3px solid #c9c7c0}
+.title{display:flex;justify-content:space-between;align-items:center;margin:0 10px 18px;color:#5a5852}
+.title b{font-size:20px;letter-spacing:.24em}
+.title span{font-size:13px;letter-spacing:.2em;font-weight:700}
+.lcd{background:linear-gradient(170deg,#173029,#0e1c18 55%,#0b1613);border-radius:26px;padding:30px 36px;box-shadow:inset 0 4px 18px #000c,inset 0 0 0 2px #0a1310;position:relative;overflow:hidden}
+.lcd:after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,rgba(255,255,255,.07),transparent 35%);pointer-events:none}
+.seg{position:relative;display:inline-block;line-height:1}
+.seg .g{color:rgba(230,240,235,.07)}
+.seg .v{position:absolute;right:0;top:0;color:#eef4f0;text-shadow:0 0 12px rgba(220,255,240,.25)}
+.lbl{font-family:D14;color:#eef4f0;font-size:20px;letter-spacing:.06em;margin-bottom:14px}
+.lbl.dim{color:rgba(238,244,240,.45)}
+.row{display:flex;align-items:flex-end;gap:22px}
+.unit{font-family:"DejaVu Sans Mono",monospace;font-weight:700;letter-spacing:.04em;color:#eef4f0;font-size:30px;margin-bottom:8px}
+.arrow{font-size:40px;color:#eef4f0;margin-bottom:10px;font-family:"DejaVu Sans"}
+.btns{display:flex;justify-content:center;gap:30px;margin-top:22px}
+.btn{width:120px;height:70px;border-radius:22px;border:3px solid #9fa49f;background:#0f1d19;color:#eef4f0;font-family:D14;font-size:22px;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 2px 6px #000a}
+.sep{height:2px;background:rgba(238,244,240,.15);margin:22px 0}
+.bars{display:flex;align-items:flex-end;gap:5px;height:70px}
+.bars i{width:9px;background:#eef4f0;opacity:.85}
+.bars i.g{background:rgba(238,244,240,.07)}
+table{border-collapse:collapse;width:100%}
+td{padding:7px 10px;border-bottom:1px solid rgba(238,244,240,.1)}
+</style></head><body>
+
+<!-- 1: GLAVNI EKRAN -->
+<div class="scene" id="s1">
+ <div class="dev" style="width:1180px">
+  <div class="title"><b>BRONXSOFT · NETMETAR</b><span>● MERI · RESET 15.</span></div>
+  <div class="lcd">
+   <div style="display:flex;justify-content:space-between">
+    <div>
+     <div class="lbl">DOWNLOAD</div>
+     <div class="row"><span class="arrow">▼</span><span class="seg" style="font-family:D7;font-size:150px"><span class="g">88.8</span><span class="v">24.6</span></span><span class="unit">MB/S</span></div>
+    </div>
+    <div>
+     <div class="lbl">UPLOAD</div>
+     <div class="row"><span class="arrow">▲</span><span class="seg" style="font-family:D7;font-size:100px"><span class="g">888</span><span class="v">1.2</span></span><span class="unit">MB/S</span></div>
+     <div class="bars" id="bars" style="margin-top:14px"></div>
+    </div>
+   </div>
+   <div class="sep"></div>
+   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+    <div><div class="lbl dim">DANAS</div><div class="row"><span class="seg" style="font-family:D7;font-size:64px"><span class="g">888.8</span><span class="v">3.42</span></span><span class="unit" style="font-size:22px">GB</span></div></div>
+    <div><div class="lbl dim">NEDELJA</div><div class="row"><span class="seg" style="font-family:D7;font-size:64px"><span class="g">888.8</span><span class="v">18.7</span></span><span class="unit" style="font-size:22px">GB</span></div></div>
+    <div><div class="lbl dim">MESEC · 16 DANA</div><div class="row"><span class="seg" style="font-family:D7;font-size:64px"><span class="g">888.8</span><span class="v">64.1</span></span><span class="unit" style="font-size:22px">GB</span></div></div>
+   </div>
+   <div class="sep"></div>
+   <div class="lbl dim" style="margin-bottom:8px">NA INTERNETU SADA · MB/S</div>
+   <table style="font-family:D14R;color:#eef4f0;font-size:19px">
+    <tr><td>CHROME</td><td style="text-align:right">▼ 18.2 </td><td style="text-align:right">▲ 0.4</td></tr>
+    <tr><td>STEAM</td><td style="text-align:right">▼ 5.9 </td><td style="text-align:right">▲ 0.1</td></tr>
+    <tr><td>SPOTIFY</td><td style="text-align:right">▼ 0.4 </td><td style="text-align:right">▲ 0.0</td></tr>
+    <tr><td>OBS STUDIO</td><td style="text-align:right">▼ 0.1 </td><td style="text-align:right">▲ 0.7</td></tr>
+   </table>
+  </div>
+  <div class="btns"><div class="btn">DAN</div><div class="btn">NED</div><div class="btn">MES</div><div class="btn">S/S</div></div>
+ </div>
+</div>
+
+<!-- 2: ISTORIJA -->
+<div class="scene" id="s2">
+ <div class="dev" style="width:1180px">
+  <div class="title"><b>BRONXSOFT · NETMETAR</b><span>ISTORIJA · OKTOBAR</span></div>
+  <div class="lcd" style="font-family:D14R;color:#eef4f0">
+   <div style="display:flex;justify-content:space-between;align-items:flex-end">
+    <div><div class="lbl dim">PERIOD 15.10 - 14.11</div>
+     <div class="row"><span class="seg" style="font-family:D7;font-size:110px"><span class="g">888.8</span><span class="v">64.1</span></span><span class="unit">GB</span></div></div>
+    <div style="text-align:right"><div class="lbl dim">RESET ZA</div>
+     <div class="row" style="justify-content:flex-end"><span class="seg" style="font-family:D7;font-size:110px"><span class="g">88</span><span class="v">14</span></span><span class="unit">DANA</span></div></div>
+   </div>
+   <div class="sep"></div>
+   <div class="lbl dim" style="margin-bottom:10px">POSLEDNJIH 7 DANA</div>
+   <table style="font-size:22px">
+    <tr style="color:rgba(238,244,240,.45);font-size:16px"><td>DAN</td><td style="text-align:right">DOWN</td><td style="text-align:right">UP</td><td style="text-align:right">UKUPNO GB</td><td style="width:360px"></td></tr>
+    <tbody id="hist"></tbody>
+   </table>
+   <div class="sep"></div>
+   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;font-size:20px">
+    <div><div class="lbl dim">OVA NEDELJA GB</div>18.7</div>
+    <div><div class="lbl dim">PROSLA NED GB</div>22.3</div>
+    <div><div class="lbl dim">SEPTEMBAR GB</div>91.5</div>
+    <div><div class="lbl dim">AVGUST GB</div>77.0</div>
+   </div>
+  </div>
+  <div class="btns"><div class="btn">DAN</div><div class="btn">NED</div><div class="btn">MES</div><div class="btn">S/S</div></div>
+ </div>
+</div>
+
+<!-- 3: MINI -->
+<div class="scene" id="s3" style="height:500px;align-items:flex-end;padding-bottom:0">
+ <div style="position:relative;width:1600px;height:500px">
+  <div style="position:absolute;left:0;right:0;bottom:0;height:60px;background:#1b1c1f;border-top:1px solid #333;display:flex;justify-content:flex-end;align-items:center;padding-right:30px;color:#ddd;font-size:18px;gap:24px"><span>SRP</span><span style="text-align:center;line-height:1.2">18:26<br><small>31.10.2026.</small></span></div>
+  <div style="position:absolute;right:30px;bottom:80px;background:linear-gradient(160deg,#f4f3ef,#d9d7d0);border-radius:22px;padding:12px;box-shadow:0 14px 30px #000a">
+   <div class="lcd" style="padding:14px 22px;border-radius:14px;display:flex;gap:26px;align-items:center">
+    <div><div class="lbl" style="font-size:12px">▼ MB/S</div><span class="seg" style="font-family:D7;font-size:44px"><span class="g">88.8</span><span class="v">24.6</span></span></div>
+    <div><div class="lbl" style="font-size:12px">▲ MB/S</div><span class="seg" style="font-family:D7;font-size:44px"><span class="g">88.8</span><span class="v">1.2</span></span></div>
+    <div><div class="lbl dim" style="font-size:12px">DANAS GB</div><span class="seg" style="font-family:D7;font-size:44px"><span class="g">88.88</span><span class="v">3.42</span></span></div>
+   </div>
+  </div>
+  <div style="position:absolute;left:60px;top:60px;color:#ccc;font-size:26px;max-width:700px;line-height:1.5"><b style="color:#fff">Mini prikaz</b><br>mali prozorčić koji stoji iznad sata u uglu ekrana, uvek na vrhu. Klikom se otvara veliki prikaz.</div>
+ </div>
+</div>
+
+<script>
+const b=document.getElementById('bars');[3,5,4,8,6,9,12,10,7,14,18,16,22,19,25,28,24,30,27,33,29,26,31,35].forEach((v,i)=>{const e=document.createElement('i');e.style.height=(v*2)+'px';b.appendChild(e)});
+const h=[["SUB 31.10","3.31","0.11",3.42],["PET 30.10","2.10","0.08",2.18],["CET 29.10","4.85","0.32",5.17],["SRE 28.10","1.94","0.05",1.99],["UTO 27.10","2.66","0.14",2.80],["PON 26.10","1.20","0.04",1.24],["NED 25.10","1.81","0.09",1.90]];
+const t=document.getElementById('hist');h.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td>${r[0]}</td><td style="text-align:right">${r[1]}</td><td style="text-align:right">${r[2]}</td><td style="text-align:right">${r[3].toFixed(2)}</td><td><div style="height:16px;background:rgba(238,244,240,.08);margin-left:20px"><div style="height:16px;width:${r[3]/5.2*100}%;background:#eef4f0;opacity:.85"></div></div></td>`;t.appendChild(tr)});
+</script>
+</body></html>

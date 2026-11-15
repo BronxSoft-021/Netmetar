@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyName>BronxSoft Netmetar</AssemblyName>
+    <RootNamespace>Netmetar</RootNamespace>
+    <!-- keep in step with the top entry of Izmene.cs / Podesavanja.Faza -->
+    <Version>0.59.45</Version>
+    <InformationalVersion>0.59.45-beta</InformationalVersion>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+    <Product>BronxSoft Netmetar</Product>
+    <Company>BronxSoft</Company>
+    <ApplicationIcon>assets\app.ico</ApplicationIcon>
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+    <!-- one small .exe that uses the .NET installed on the computer -->
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>false</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- the helper is a separate project in its own folder -->
+    <Compile Remove="Merac\**" />
+    <None Remove="Merac\**" />
+    <EmbeddedResource Remove="Merac\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="fonts\DSEG7Classic-Bold.ttf" LogicalName="DSEG7Classic-Bold.ttf" />
+    <EmbeddedResource Include="fonts\DSEG14Classic-Bold.ttf" LogicalName="DSEG14Classic-Bold.ttf" />
+    <EmbeddedResource Include="fonts\DSEG14Classic-Regular.ttf" LogicalName="DSEG14Classic-Regular.ttf" />
+    <EmbeddedResource Include="fonts\Rajdhani-SemiBold.ttf" LogicalName="Rajdhani-SemiBold.ttf" />
+    <EmbeddedResource Include="assets\app.ico" LogicalName="app.ico" />
+  </ItemGroup>
+
+</Project>
