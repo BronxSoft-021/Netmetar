@@ -1,5 +1,13 @@
 # BronxSoft Netmetar — Changelog
 
+## Merač 0.1.1 — 2026-11-16
+
+### Added
+- An icon of its own: `assets/merac.ico` (7 sizes, PNG inside), made by `assets/napravi-ikonicu.ps1` — the same family as the main icon (cream body, dark green screen) with three measuring bars instead of the arrows, so the helper is recognisable in Task Manager and on shortcuts.
+
+### Changed
+- The helper is a Windows application now (`WinExe`): no console window appears when the scheduled task starts it.
+
 ## v0.59.45-beta — 2026-11-15
 
 ### Added
