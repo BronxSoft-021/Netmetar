@@ -36,6 +36,14 @@ static class Izmene
 
     public static readonly Unos[] Spisak = Numerisi(
     [
+        new("16.11.2026",
+        [
+            "Zum prozora: Ctrl+točkić i dupli klik | Window zoom: Ctrl+wheel and a double click",
+            "Ctrl+0 vraća prozor na 100% | Ctrl+0 puts the window back to 100%",
+        ],
+        [
+            "Prozor: najmanje 700, najviše 2× | Window: at least 700, at most 2×",
+        ]),
         new("15.11.2026",
         [
             "Tačna potrošnja po programu (merač) | Exact traffic per program (the meter)",

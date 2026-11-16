@@ -10,8 +10,8 @@
     <AssemblyName>BronxSoft Netmetar</AssemblyName>
     <RootNamespace>Netmetar</RootNamespace>
     <!-- keep in step with the top entry of Izmene.cs / Podesavanja.Faza -->
-    <Version>0.59.45</Version>
-    <InformationalVersion>0.59.45-beta</InformationalVersion>
+    <Version>0.61.46</Version>
+    <InformationalVersion>0.61.46-beta</InformationalVersion>
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
     <Product>BronxSoft Netmetar</Product>
     <Company>BronxSoft</Company>

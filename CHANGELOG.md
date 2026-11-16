@@ -1,5 +1,15 @@
 # BronxSoft Netmetar — Changelog
 
+## v0.61.46-beta — 2026-11-16
+
+### Added
+- Ctrl + mouse wheel zooms the window through the crisp sizes (50, 75, 100, 125, 150, 200 %), and Ctrl+0 returns to 100 %. A double click on the header switches between 100 % and as large as the screen.
+- The window never gets lost: the saved place and size are clamped on start, and when the monitor is gone the nearest screen is used instead of falling back to the default size (`NajbliziEkran`).
+
+### Changed
+- The width stays between 700 px (below that the labels stop being readable) and `MaxSirina` = the smaller of 2× the design and what fits the screen by width **and** by height — Windows does not allow a window bigger than the screen, so without the height limit the proportions broke at the bottom (seen at 1779 px: height stopped at 1100 instead of 1294).
+- Measured for the limit: drawing the big window takes 4.7 ms a frame at 980 px and about 27 ms at 2×, once a second.
+
 ## Merač 0.1.1 — 2026-11-16
 
 ### Added

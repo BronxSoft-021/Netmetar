@@ -759,17 +759,46 @@ sealed class Netmetar : ApplicationContext, IStanje
         if (p.Prozor is { Length: 4 } g)
         {
             var r = new Rectangle(g[0], g[1], g[2], g[3]);
-            if (Screen.AllScreens.Any(s => s.WorkingArea.Contains(new Point(r.X + r.Width / 2, r.Y + r.Height / 2))))
+            var centar = new Point(r.X + r.Width / 2, r.Y + r.Height / 2);
+            // the screen the window was on, or the nearest one when that screen is gone
+            var ekran = Screen.AllScreens.FirstOrDefault(x => x.WorkingArea.Contains(centar)) ?? NajbliziEkran(centar);
+            if (ekran != null)
             {
+                // the saved size can be too small, too big or from a screen that is gone: keep it usable and reachable
+                r.Width = Math.Clamp(r.Width, GlavniProzor.MinSirina, GlavniProzor.MaxSirina(glavni.DeviceDpi, ekran));
                 r.Height = GlavniProzor.VisinaZa(r.Width);
+                var w = ekran.WorkingArea;
+                // a window that fits goes back fully on screen; a bigger one keeps at least part of the header visible
+                int minX = r.Width <= w.Width ? w.Left : w.Left - r.Width + 160;
+                int maxX = r.Width <= w.Width ? w.Right - r.Width : w.Right - 160;
+                int minY = r.Height <= w.Height ? w.Top : w.Top - r.Height + 80;
+                int maxY = r.Height <= w.Height ? w.Bottom - r.Height : w.Bottom - 80;
+                r.X = Math.Clamp(r.X, minX, maxX);
+                r.Y = Math.Clamp(r.Y, minY, maxY);
                 glavni.Bounds = r;
                 return;
             }
         }
         var e = Screen.PrimaryScreen.WorkingArea;
-        int w = Math.Min(980 * glavni.DeviceDpi / 96, (int)(e.Width * 0.8));
-        int h = GlavniProzor.VisinaZa(w);
-        glavni.Bounds = new Rectangle(e.Left + (e.Width - w) / 2, e.Top + (e.Height - h) / 2, w, h);
+        int w2 = Math.Min(980 * glavni.DeviceDpi / 96, (int)(e.Width * 0.8));
+        int h = GlavniProzor.VisinaZa(w2);
+        glavni.Bounds = new Rectangle(e.Left + (e.Width - w2) / 2, e.Top + (e.Height - h) / 2, w2, h);
+    }
+
+    /// <summary>The screen nearest to a point (a saved place can belong to a monitor that is no longer plugged in).</summary>
+    static Screen NajbliziEkran(Point tacka)
+    {
+        Screen najbolji = null;
+        long najblize = long.MaxValue;
+        foreach (var s in Screen.AllScreens)
+        {
+            var w = s.WorkingArea;
+            int dx = tacka.X < w.Left ? w.Left - tacka.X : tacka.X > w.Right ? tacka.X - w.Right : 0;
+            int dy = tacka.Y < w.Top ? w.Top - tacka.Y : tacka.Y > w.Bottom ? tacka.Y - w.Bottom : 0;
+            long d = (long)dx * dx + (long)dy * dy;
+            if (d < najblize) { najblize = d; najbolji = s; }
+        }
+        return najbolji;
     }
 
     // a minimized window cannot own a dialog: the dialog would stay invisible

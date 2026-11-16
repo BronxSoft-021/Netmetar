@@ -121,9 +121,63 @@ sealed class GlavniProzor : Form
         Icon = ikona;
         FormBorderStyle = FormBorderStyle.None;
         MaximizeBox = false;
-        MinimumSize = new Size(560, VisinaZa(560));
+        MinimumSize = new Size(MinSirina, VisinaZa(MinSirina));
         StartPosition = FormStartPosition.Manual;
         KeyPreview = true;
+    }
+
+    /// <summary>Smallest and largest width of the device: below it the labels stop being readable, above 2× the
+    /// drawing costs too much (measured: 4.7 ms a frame at 980 px, about 27 ms at 2×, once a second).</summary>
+    public const int MinSirina = 700;
+    static readonly double[] Koraci = [0.5, 0.75, 1, 1.25, 1.5, 2];
+
+    /// <summary>The largest width that still fits the screen: Windows does not let a window be bigger than the screen,
+    /// so the width is limited by the height as well (otherwise the proportions would break at the bottom).</summary>
+    public static int MaxSirina(int dpi, Screen ekran = null)
+    {
+        var r = (ekran ?? Screen.PrimaryScreen).WorkingArea;
+        int poSirini = Math.Min((int)Math.Round(2 * (double)W * dpi / 96), r.Width);
+        return Math.Min(poSirini, SirinaZa(r.Height));
+    }
+
+    /// <summary>Width of the device at 100 % on this screen.</summary>
+    double Osnova => (double)W * DeviceDpi / 96;
+
+    /// <summary>Ctrl + wheel: the next or the previous of the crisp sizes (the drawing stays sharp there).</summary>
+    public void Zum(bool uvecaj)
+    {
+        double sada = Width / Osnova;
+        double cilj = uvecaj
+            ? Koraci.FirstOrDefault(k => k > sada + 0.01)
+            : Koraci.LastOrDefault(k => k < sada - 0.01);
+        if (cilj == 0) return;   // already the largest or the smallest step
+        PostaviSirinu((int)Math.Round(Osnova * cilj));
+    }
+
+    /// <summary>Back to the design size (Ctrl+0).</summary>
+    public void StoPosto() => PostaviSirinu((int)Math.Round(Osnova));
+
+    /// <summary>As large as fits the screen, keeping the proportions (a double click on the header).</summary>
+    public void StaneNaEkran()
+    {
+        var ekran = Screen.FromHandle(Handle);
+        var r = ekran.WorkingArea;
+        int sirina = Math.Min(r.Width, MaxSirina(DeviceDpi, ekran));
+        while (sirina > MinSirina && VisinaZa(sirina) > r.Height) sirina -= 16;
+        PostaviSirinu(sirina);
+        Left = r.Left + (r.Width - Width) / 2;
+        Top = r.Top + (r.Height - Height) / 2;
+        Osvezi();
+    }
+
+    /// <summary>Sets the width, keeps the centre, clamps into the allowed range.</summary>
+    public void PostaviSirinu(int sirina)
+    {
+        sirina = Math.Clamp(sirina, MinSirina, MaxSirina(DeviceDpi, Screen.FromHandle(Handle)));
+        var centar = new Point(Left + Width / 2, Top + Height / 2);
+        int visina = VisinaZa(sirina);
+        Bounds = new Rectangle(centar.X - sirina / 2, centar.Y - visina / 2, sirina, visina);
+        Osvezi();
     }
 
     // layered window: only the device and its shadow are visible, without a rectangular background
@@ -143,19 +197,24 @@ sealed class GlavniProzor : Form
 
     [StructLayout(LayoutKind.Sequential)] struct PRAVOUGAONIK { public int Levo, Gore, Desno, Dole; }
 
-    // Resizing keeps the proportions of the device, so that no empty transparent strip appears next to it
+    // Resizing keeps the proportions of the device, so that no empty transparent strip appears next to it.
+    // The width always stays between MinSirina and MaxSirina, whichever edge is dragged.
     void DrziOdnos(ref Message m)
     {
         var r = Marshal.PtrToStructure<PRAVOUGAONIK>(m.LParam);
         int strana = (int)m.WParam;   // 1 left, 2 right, 3 top, 4 top left, 5 top right, 6 bottom, 7 bottom left, 8 bottom right
-        if (strana is 3 or 6) r.Desno = r.Levo + SirinaZa(r.Dole - r.Gore);
-        else if (strana is 4 or 5) r.Gore = r.Dole - VisinaZa(r.Desno - r.Levo);
-        else r.Dole = r.Gore + VisinaZa(r.Desno - r.Levo);
+        bool gore = strana is 3 or 4 or 5;
+        bool levo = strana is 1 or 4 or 7;
+        int sirina = strana is 3 or 6 ? SirinaZa(r.Dole - r.Gore) : r.Desno - r.Levo;
+        sirina = Math.Clamp(sirina, MinSirina, MaxSirina(DeviceDpi, Screen.FromHandle(Handle)));
+        int visina = VisinaZa(sirina);
+        if (levo) r.Levo = r.Desno - sirina; else r.Desno = r.Levo + sirina;
+        if (gore) r.Gore = r.Dole - visina; else r.Dole = r.Gore + visina;
         Marshal.StructureToPtr(r, m.LParam, false);
         m.Result = 1;
     }
 
-    const int WM_CLOSE = 0x10, WM_NCHITTEST = 0x84, WM_NCRBUTTONUP = 0xA5, WM_SIZING = 0x214;
+    const int WM_CLOSE = 0x10, WM_NCHITTEST = 0x84, WM_NCLBUTTONDBLCLK = 0xA3, WM_NCRBUTTONUP = 0xA5, WM_SIZING = 0x214;
 
     // Frameless window: the header drags it, the edges resize it.
     protected override void WndProc(ref Message m)
@@ -171,6 +230,13 @@ sealed class GlavniProzor : Form
         if (m.Msg == WM_SIZING)
         {
             DrziOdnos(ref m);
+            return;
+        }
+        if (m.Msg == WM_NCLBUTTONDBLCLK && (int)m.WParam == 2)   // HTCAPTION: a double click on the header
+        {
+            // 100 % <-> as large as the screen; the sides keep their proportions anyway
+            if (Width < Osnova * 1.02) StaneNaEkran();
+            else StoPosto();
             return;
         }
         if (m.Msg == WM_NCRBUTTONUP)
@@ -292,6 +358,12 @@ sealed class GlavniProzor : Form
 
     protected override void OnMouseWheel(MouseEventArgs e)
     {
+        // Ctrl + wheel: the window grows or shrinks to the next crisp size
+        if ((ModifierKeys & Keys.Control) == Keys.Control)
+        {
+            Zum(e.Delta > 0);
+            return;
+        }
         if (Rezim == "programi") PomeriPrograme(-Math.Sign(e.Delta));
         else if (Rezim == "mesdani") PomeriIstoriju(-Math.Sign(e.Delta));
         base.OnMouseWheel(e);
@@ -299,6 +371,14 @@ sealed class GlavniProzor : Form
 
     protected override void OnKeyDown(KeyEventArgs e)
     {
+        // Ctrl+0: back to the design size
+        if ((ModifierKeys & Keys.Control) == Keys.Control && e.KeyCode is Keys.D0 or Keys.NumPad0)
+        {
+            StoPosto();
+            e.Handled = true;
+            e.SuppressKeyPress = true;
+            return;
+        }
         // D, N, M and Space do the same as the buttons under the display; F1 opens the help.
         string k = e.KeyCode switch
         {
